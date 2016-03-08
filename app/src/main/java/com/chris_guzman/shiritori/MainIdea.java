@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +15,9 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.chris_guzman.shiritori.Data.CouchbaseDM;
+import com.couchbase.lite.Document;
 
 import java.util.ArrayList;
 
@@ -23,11 +27,16 @@ public class MainIdea extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList myDataset = new ArrayList<String>();
     private EditText ideaTxt;
+    public static final String DB_NAME = "ideas";
+    public static final String TAG = "ideas";
+    public static CouchbaseDM couchDM = CouchbaseDM.getInstance();
+    private Document couchDocument = couchDM.createCouchDBDocument(this);
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "Begin Couchbase Events App");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_idea);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -70,7 +79,9 @@ public class MainIdea extends AppCompatActivity {
                 return false;
             }
         });
+        Log.d(TAG, "End Couchbase Events App");
     }
+
 
     private void addToListAndRefreshEditTxt(String idea) {
         if (!TextUtils.isEmpty(idea) && idea.length() > 1) {
@@ -79,6 +90,7 @@ public class MainIdea extends AppCompatActivity {
             mRecyclerView.setAdapter(mAdapter);
             ideaTxt.setText(idea.substring(idea.length() - 1).toUpperCase());
             ideaTxt.setSelection(1);
+            couchDM.updateDoc(couchDocument.getId(), "word", idea);
         }
     }
 

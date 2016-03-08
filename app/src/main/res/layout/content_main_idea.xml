@@ -21,6 +21,7 @@
         android:hint="It all starts with an idea..."
         android:singleLine="true"
         android:imeOptions="actionDone"
+        android:inputType="textCapSentences"
         />
 
     <android.support.v7.widget.RecyclerView
