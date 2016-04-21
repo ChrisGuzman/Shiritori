@@ -7,9 +7,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * Copyright (c) 2015 OrderUp. All rights reserved.
- */
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private ArrayList mDataset;
 

@@ -16,9 +16,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.chris_guzman.shiritori.Data.CouchbaseDM;
-import com.couchbase.lite.Document;
-
 import java.util.ArrayList;
 
 public class MainIdea extends AppCompatActivity {
@@ -27,10 +24,7 @@ public class MainIdea extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList myDataset = new ArrayList<String>();
     private EditText ideaTxt;
-    public static final String DB_NAME = "ideas";
     public static final String TAG = "ideas";
-    public static CouchbaseDM couchDM = CouchbaseDM.getInstance();
-    private Document couchDocument = couchDM.createCouchDBDocument(this);
 
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "Begin Couchbase Events App");
@@ -79,7 +73,6 @@ public class MainIdea extends AppCompatActivity {
                 return false;
             }
         });
-        Log.d(TAG, "End Couchbase Events App");
     }
 
 
@@ -90,7 +83,6 @@ public class MainIdea extends AppCompatActivity {
             mRecyclerView.setAdapter(mAdapter);
             ideaTxt.setText(idea.substring(idea.length() - 1).toUpperCase());
             ideaTxt.setSelection(1);
-            couchDM.updateDoc(couchDocument.getId(), "word", idea);
         }
     }
 
