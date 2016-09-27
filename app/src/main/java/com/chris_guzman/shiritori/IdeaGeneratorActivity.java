@@ -1,13 +1,14 @@
 package com.chris_guzman.shiritori;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,28 +16,24 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import com.firebase.client.Firebase;
 import java.util.ArrayList;
 
-public class MainIdea extends AppCompatActivity {
+public class IdeaGeneratorActivity extends BaseActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList myDataset = new ArrayList<String>();
     private EditText ideaTxt;
     public static final String TAG = "ideas";
+    private Firebase ideaRef;
 
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "Begin Couchbase Events App");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_idea);
+        setContentView(R.layout.activity_idea_generator);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        myDataset.add("Apple");
-        myDataset.add("Banana");
-        myDataset.add("Cherry");
 
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
@@ -75,10 +72,25 @@ public class MainIdea extends AppCompatActivity {
         });
     }
 
+    private void showSetIdeaNameDialog() {
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        new AlertDialog.Builder(this).setMessage("What shall we call this brain storm?")
+            .setView(input)
+            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override public void onClick(DialogInterface dialog, int which) {
+                    ideaRef = ((ShiritoriApplication) getApplication()).getFirebaseRef().child(input.getText().toString());
+                }
+            })
+            .setCancelable(false)
+            .show();
+    }
+
 
     private void addToListAndRefreshEditTxt(String idea) {
         if (!TextUtils.isEmpty(idea) && idea.length() > 1) {
             myDataset.add(0, idea);
+            //ideaRef.setValue(myDataset);
             mAdapter = new MyAdapter(myDataset);
             mRecyclerView.setAdapter(mAdapter);
             ideaTxt.setText(idea.substring(idea.length() - 1).toUpperCase());

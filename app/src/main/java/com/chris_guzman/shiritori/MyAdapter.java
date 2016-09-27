@@ -3,8 +3,8 @@ package com.chris_guzman.shiritori;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
@@ -16,9 +16,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView mTextView;
-        public ViewHolder(TextView v) {
+        public ViewHolder(LinearLayout v) {
             super(v);
-            mTextView = v;
+            mTextView = (TextView) v.findViewById(R.id.item_idea_name_txt);
         }
     }
 
@@ -32,11 +32,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                    int viewType) {
         // create a new view
-        TextView v = (TextView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.my_text_view, parent, false);
+        LinearLayout ideaNameLayout = (LinearLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_idea_name, parent, false);
+
         // set the view's size, margins, paddings and layout parameters
 //        ...
-        ViewHolder vh = new ViewHolder(v);
+        ViewHolder vh = new ViewHolder(ideaNameLayout);
         return vh;
     }
 

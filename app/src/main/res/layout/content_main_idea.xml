@@ -11,17 +11,16 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_main_idea"
-    tools:context=".MainIdea">
+    tools:showIn="@layout/activity_idea_generator"
+    tools:context=".IdeaGeneratorActivity">
 
     <EditText
         android:id="@+id/idea_edit_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="It all starts with an idea..."
-        android:singleLine="true"
         android:imeOptions="actionDone"
-        android:inputType="textCapSentences"
+        android:inputType="textCapSentences|textMultiLine"
         />
 
     <android.support.v7.widget.RecyclerView
