@@ -2,13 +2,17 @@ package com.chris_guzman.shiritori;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,6 +21,7 @@ public class IdeasListActivity extends BaseActivity {
 
     private static final String EMAIL = "email";
     public static final String ANONYMOUS = "anonymous";
+    private static final String TAG = "MainActivity";
 
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
@@ -55,6 +60,16 @@ public class IdeasListActivity extends BaseActivity {
                 mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
             }
         }
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+            .enableAutoManage(this /* FragmentActivity */, new GoogleApiClient.OnConnectionFailedListener() {
+                @Override public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                    Log.d(TAG, "onConnectionFailed:" + connectionResult);
+                    Toast.makeText(IdeasListActivity.this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
+                }
+            })
+            .addApi(Auth.GOOGLE_SIGN_IN_API)
+            .build();
     }
 
     @Override

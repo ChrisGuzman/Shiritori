@@ -103,7 +103,7 @@ public class SignInActivity extends BaseActivity {
                         Toast.makeText(SignInActivity.this, "Authentication failed.",
                                        Toast.LENGTH_SHORT).show();
                     } else {
-                        startActivity(new Intent(SignInActivity.this, IdeasListActivity.class));
+                        startActivity(new Intent(SignInActivity.this, IdeaGeneratorActivity.class));
                         finish();
                     }
                 }

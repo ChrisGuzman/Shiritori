@@ -2,11 +2,9 @@ package com.chris_guzman.shiritori;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -21,7 +19,7 @@ public class IdeaGeneratorActivity extends BaseActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private ArrayList myDataset = new ArrayList<String>();
+    private ArrayList myDataset = new ArrayList<Idea>();
     private EditText ideaTxt;
     public static final String TAG = "ideas";
 
@@ -69,30 +67,22 @@ public class IdeaGeneratorActivity extends BaseActivity {
         });
     }
 
-    private void showSetIdeaNameDialog() {
-        final EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-        new AlertDialog.Builder(this).setMessage("What shall we call this brain storm?")
-            .setView(input)
-            .setPositiveButton("Ok", null)
-            .setCancelable(false)
-            .show();
-    }
-
-
-    private void addToListAndRefreshEditTxt(String idea) {
-        if (!TextUtils.isEmpty(idea) && idea.length() > 1) {
+    private void addToListAndRefreshEditTxt(String ideaName) {
+        if (!TextUtils.isEmpty(ideaName) && ideaName.length() > 1) {
+            Idea idea = new Idea(ideaName);
             myDataset.add(0, idea);
-            //ideaRef.setValue(myDataset);
-            mAdapter = new MyAdapter(myDataset);
-            mRecyclerView.setAdapter(mAdapter);
-            ideaTxt.setText(idea.substring(idea.length() - 1).toUpperCase());
+            mAdapter.notifyDataSetChanged();
+            ideaTxt.setText(ideaName.substring(ideaName.length() - 1).toUpperCase());
             ideaTxt.setSelection(1);
-            saveToFireBase();
+            if (myDataset.size() > 2) {
+                Idea ancestor = (Idea) myDataset.get(1);
+                idea.setAncestor(ancestor);
+            }
+            saveToFireBase(idea);
         }
     }
 
-    private void saveToFireBase() {
+    private void saveToFireBase(Idea idea) {
 
     }
 
