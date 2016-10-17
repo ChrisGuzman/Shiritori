@@ -10,6 +10,8 @@ public class Idea {
         this.ancestor = ancestor;
     }
 
+    public Idea() {}
+
     public Idea(String name) {
         this.name = name;
     }
