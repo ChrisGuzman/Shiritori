@@ -1,6 +1,5 @@
 package com.chris_guzman.shiritori;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -16,7 +15,6 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-import com.firebase.client.Firebase;
 import java.util.ArrayList;
 
 public class IdeaGeneratorActivity extends BaseActivity {
@@ -26,7 +24,6 @@ public class IdeaGeneratorActivity extends BaseActivity {
     private ArrayList myDataset = new ArrayList<String>();
     private EditText ideaTxt;
     public static final String TAG = "ideas";
-    private Firebase ideaRef;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,11 +74,7 @@ public class IdeaGeneratorActivity extends BaseActivity {
         input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         new AlertDialog.Builder(this).setMessage("What shall we call this brain storm?")
             .setView(input)
-            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                @Override public void onClick(DialogInterface dialog, int which) {
-                    ideaRef = ((ShiritoriApplication) getApplication()).getFirebaseRef().child(input.getText().toString());
-                }
-            })
+            .setPositiveButton("Ok", null)
             .setCancelable(false)
             .show();
     }
@@ -95,7 +88,12 @@ public class IdeaGeneratorActivity extends BaseActivity {
             mRecyclerView.setAdapter(mAdapter);
             ideaTxt.setText(idea.substring(idea.length() - 1).toUpperCase());
             ideaTxt.setSelection(1);
+            saveToFireBase();
         }
+    }
+
+    private void saveToFireBase() {
+
     }
 
     @Override
